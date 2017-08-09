@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
 			dir  = temp;
 		}
 	}
-	if(!dir.BeginsWith("/")){// not full path
+	if(!dir.BeginsWith("/")){/* not full path */
 		dir = Form("%s/%s",gSystem->Getenv("PWD"),dir.Data());
 	}
 	if(min_size.Length()>1){
@@ -91,13 +91,13 @@ int main(int argc, char *argv[]) {
 	for(int i=0;i<jobs_no;i++){
 		TString temp_dir = Form("%s/dir_%03d",dir.Data(),i);
 		gSystem->mkdir(temp_dir);
-		/// move files to given directory
+		/* move files to given directory */
 		for(int j=0;j<max_merge;j++){
 			TObjString *name = (TObjString*)array->UncheckedAt(file_count++);
 			if(name==0x0) continue;
 			gROOT->ProcessLine(Form(".! mv %s/%s %s/",dir.Data(),name->GetString().Data(),temp_dir.Data()));
 		}
-		//create merging script
+		/*create merging script*/
 		std::ofstream minimerger;
 		minimerger.open(Form("%s/minimerger.sh",temp_dir.Data()));
 		minimerger<<"#!/bin/bash"<<endl;
@@ -105,9 +105,9 @@ int main(int argc, char *argv[]) {
 			minimerger<<"export PATH=$PATH:"<<gSystem->Getenv("PATH")<<endl;
 			minimerger<<"export LD_LIBRARY_PATH="<<gSystem->Getenv("LD_LIBRARY_PATH")<<":$LD_LIBRARY_PATH"<<endl;
 		}else if(source.Length()>0){
-			if(source.Contains("/")){// probably full path
+			if(source.Contains("/")){/* probably full path */
 				minimerger<<"source "<<source<<endl;
-			}else{//probably pointing to current file
+			}else{/*probably pointing to current file*/
 				minimerger<<"source "<<gSystem->Getenv("PWD")<<"/"<<source<<endl;
 			}
 		}
@@ -118,7 +118,8 @@ int main(int argc, char *argv[]) {
 		minimerger<<"cd .."<<endl;
 		minimerger<<"can_merge=1"<<endl;
 		minimerger<<Form("for F in  %s/dir_*;",dir.Data())<<endl;
-		minimerger<<"\tif [ ! -f \\$F/done.txt ]; then"<<endl;
+		minimerger<<"do"<<endl;
+		minimerger<<"\tif [ ! -f \$F/done.txt ]; then"<<endl;
 		minimerger<<"\tcan_merge=0"<<endl;
 		minimerger<<"\tfi"<<endl;
 		minimerger<<"done"<<endl;
