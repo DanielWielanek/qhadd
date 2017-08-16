@@ -161,7 +161,7 @@ int main(int argc, char *argv[]) {
 			minimerger<<"hadd total.root subtotal_*"<<endl;
 		}
 
-		minimerger<<"cp total.root "<<"../merged/"<<i<<".root"<<endl;
+		minimerger<<"cp total.root "<<"../merged/total_"<<i<<".root"<<endl;
 		minimerger<<"touch done.txt"<<endl;
 		minimerger<<"cd .."<<endl;
 		minimerger<<"can_merge=1"<<endl;
