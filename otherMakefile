@@ -1,0 +1,16 @@
+#for some systems standard makefile doesn't work, so try to use this
+CC=g++
+CFLAGS=-c -Wall -g -O  `root-config --cflags` -Wall -m32
+LDFLAGS= -g -O  `root-config --libs`  -Wall -m32
+SOURCES=qhadd.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
+EXECUTABLE=qhadd
+
+all: $(SOURCES) $(EXECUTABLE)
+
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+
+.cpp.o:
+	$(CC) $(CFLAGS) $< -o $@
+clean:;         @rm -f $(OBJECTS)  $(EXECUTABLE) *.o  *.d
